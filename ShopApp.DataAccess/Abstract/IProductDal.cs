@@ -8,14 +8,8 @@ using System.Threading.Tasks;
 
 namespace ShopApp.DataAccess.Abstract
 {
-    public  interface IProductDal
+    public  interface IProductDal:IRepository<Product>
     {
-        Product GetById(int id);
-        Product GetOne(Expression<Func<Product, bool>> filter); //parametre olarak linq sorgusu alır
-        IQueryable<Product> GetAll(Expression<Func<Product, bool>> filter); //Iqueryble --> tekrar sorgulanabilir
-
-        void Create(Product product);
-        void Update(Product product);
-        void Delete(Product product);
+        IEnumerable<Product> GetPopolerProduct();  
     }
 }
