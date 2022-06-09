@@ -32,7 +32,7 @@ namespace ShopApp.DataAccess.Concrete.EfCore
             }
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter=null)  //filter = null--> varsayıla ndedğer null olsun
+        public List<T> GetAll(Expression<Func<T, bool>> filter=null)  //filter = null--> varsayıla ndedğer null olsun
         {
             using (var context = new TContext())
             {

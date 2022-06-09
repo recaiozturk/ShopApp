@@ -11,7 +11,7 @@ namespace ShopApp.DataAccess.Abstract
     {
         T GetById(int id);
         T GetOne(Expression<Func<T, bool>> filter); //parametre olarak linq sorgusu alır
-        IEnumerable<T> GetAll(Expression<Func<T, bool>> filter=null); //Iqueryble --> tekrar sorgulanabilir
+        List<T> GetAll(Expression<Func<T, bool>> filter=null); //Iqueryble --> tekrar sorgulanabilir
 
         void Create(T entity);
         void Update(T entity);
