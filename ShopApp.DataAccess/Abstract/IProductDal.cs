@@ -10,6 +10,8 @@ namespace ShopApp.DataAccess.Abstract
 {
     public  interface IProductDal:IRepository<Product>
     {
-        IEnumerable<Product> GetPopolerProduct();  
+        IEnumerable<Product> GetPopolerProduct();
+
+        Product GetProductDetails(int id);
     }
 }

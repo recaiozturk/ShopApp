@@ -25,6 +25,7 @@ namespace ShopApp.DataAccess.Concrete.EfCore
                 if (context.Products.Count() == 0)
                 {
                     context.Products.AddRange(Products);
+                    context.AddRange(ProductCategory);
                 }
 
                 context.SaveChanges();
@@ -32,22 +33,34 @@ namespace ShopApp.DataAccess.Concrete.EfCore
         }
 
 
-        private static Category[] Categories =
+        private static Category[] Categories =  
         {
             new Category(){Name="Telefon"},
-            new Category(){Name="Bilgisayar"}
+            new Category(){Name="Bilgisayar"},
+            new Category(){Name="Electronic"}
         };
 
         private static Product[] Products =
         {
-            new Product(){Name="Samsung S4",Price=1000,ImageUrl="1.jpg"},
-            new Product(){Name="Samsung S5",Price=2000,ImageUrl="1.jpg"},
-            new Product(){Name="Samsung S6",Price=3000,ImageUrl="1.jpg"},
-            new Product(){Name="Samsung S7",Price=4000,ImageUrl="1.jpg"},
-            new Product(){Name="IPhone 6S",Price=31000,ImageUrl="1.jpg"},
-            new Product(){Name="IPhone 7S",Price=12000,ImageUrl="1.jpg"},
-            new Product(){Name="IPhone 8S",Price=14000,ImageUrl="1.jpg"},
+            new Product(){Name="Samsung S4",Price=1000,ImageUrl="1.jpg",Description="<p>Fevjeladed bbir telefon</p>"},
+            new Product(){Name="Samsung S5",Price=2000,ImageUrl="1.jpg",Description="<p>Fevjeladed bbir telefon</p>"},
+            new Product(){Name="Samsung S6",Price=3000,ImageUrl="1.jpg",Description="<p>Fevjeladed bbir telefon</p>"},
+            new Product(){Name="Samsung S7",Price=4000,ImageUrl="1.jpg",Description="<p>Fevjeladed bbir telefon</p>"},
+            new Product(){Name="IPhone 6S",Price=31000,ImageUrl="1.jpg",Description="<p>Fevjeladed bbir telefon</p>"},
+            new Product(){Name="IPhone 7S",Price=12000,ImageUrl="1.jpg",Description="<p>Fevjeladed bbir telefon</p>"},
+            new Product(){Name="IPhone 8S",Price=14000,ImageUrl="1.jpg",Description="<p>Fevjeladed bbir telefon</p>"}
 
+        };
+
+        private static ProductCategory[] ProductCategory =
+        {
+            new ProductCategory(){Product=Products[0],Category=Categories[0]},
+            new ProductCategory(){Product=Products[0],Category=Categories[2]},
+            new ProductCategory(){Product=Products[1],Category=Categories[0]},
+            new ProductCategory(){Product=Products[1],Category=Categories[1]},
+            new ProductCategory(){Product=Products[2],Category=Categories[0]},
+            new ProductCategory(){Product=Products[2],Category=Categories[2]},
+            new ProductCategory(){Product=Products[3],Category=Categories[1]}
         };
     }
 }

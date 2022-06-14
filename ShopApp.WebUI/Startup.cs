@@ -31,7 +31,8 @@ namespace ShopApp.WebUI
             services.AddRazorPages();
 
             //services.AddScoped<IProductDal, MemoryProductDal>();
-            services.AddScoped<IProductDal, EfCoreProductDal>();          
+            services.AddScoped<IProductDal, EfCoreProductDal>();
+            services.AddScoped<ICategoryDal, EfCoreCategoryDal>();
             services.AddScoped<IProductService, ProductManager>();
 
             
