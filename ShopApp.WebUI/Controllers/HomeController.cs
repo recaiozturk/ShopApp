@@ -8,12 +8,12 @@ namespace ShopApp.WebUI.Controllers
     {
 
         private IProductService _productSevice;
-        private IcategoryServicee _categorySevice;
+        
 
-        public HomeController(IProductService productSevice, IcategoryServicee categorySevice)
+        public HomeController(IProductService productSevice)
         {
             _productSevice = productSevice;
-            _categorySevice=categorySevice;
+            
         }
 
         public IActionResult Index()

@@ -8,6 +8,7 @@ using ShopApp.Business.Concrete;
 using ShopApp.DataAccess.Abstract;
 using ShopApp.DataAccess.Concrete.EfCore;
 using ShopApp.DataAccess.Concrete.Memory;
+using ShopApp.WebUI.Middlewares;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +31,10 @@ namespace ShopApp.WebUI
             services.AddRazorPages();
 
             //services.AddScoped<IProductDal, MemoryProductDal>();
-            services.AddScoped<IProductDal, EfCoreProductDal>();
+            services.AddScoped<IProductDal, EfCoreProductDal>();          
             services.AddScoped<IProductService, ProductManager>();
+
+            
 
             services.AddControllersWithViews(); ;
         }
@@ -50,6 +53,7 @@ namespace ShopApp.WebUI
             }
 
             app.UseStaticFiles();
+            //app.CustomStaticFiles();
 
             app.UseRouting();
 
