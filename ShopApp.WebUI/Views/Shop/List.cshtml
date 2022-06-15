@@ -13,7 +13,7 @@
 
     <div class="col-md-9">
 
-       
+
 
         <div class="row">
             @foreach (var product in Model.Products)
@@ -39,9 +39,13 @@
                         </div>
                     </div>
                 </div>
-
             }
         </div>
+
+        <div page-model="@Model.PageInfo">
+
+        </div>
+
     </div>
 </div>
 

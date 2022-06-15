@@ -46,9 +46,19 @@ namespace ShopApp.WebUI.Controllers
         //products/telefon?page=1
         public IActionResult List(string category,int page=1)
         {
+            const int pageSize = 3;
+
             return View(new ProductListModel()
             {
-                Products = _productSevice.GetProductsByCategorry(category,page)
+                Products = _productSevice.GetProductsByCategorry(category, page, pageSize),
+                PageInfo =new PageInfo()
+                {
+                    TotalItems=_productSevice.GetCountByCategory(category),
+                    CurrentPage=page,
+                    ItemsPerPage=pageSize,
+                    CurrentCategory=category
+                }
+                
             });
         }
     }

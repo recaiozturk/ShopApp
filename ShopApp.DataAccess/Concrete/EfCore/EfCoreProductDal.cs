@@ -12,6 +12,26 @@ namespace ShopApp.DataAccess.Concrete.EfCore
 {
     public class EfCoreProductDal : EfCoreGenericRepository<Product, ShopContext>, IProductDal
     {
+        public int GetCountByCategory(string category)
+        {
+            using (var context = new ShopContext())
+            {
+                var products = context.Products.AsQueryable();
+
+                //category stringi null değil ise
+                if (!string.IsNullOrEmpty(category))
+                {
+                    //Caategory ye ulaşmak için daha önce CategoryProduct a ulaşıyoruz,sql dedki join işlemi gibi
+                    products = products
+                                .Include(i => i.ProductCategories)
+                                .ThenInclude(i => i.Category)
+                                .Where(i => i.ProductCategories.Any(a => a.Category.Name.ToLower() == category.ToLower()));
+                }
+
+                return products.Count();
+            }
+        }
+
         public IEnumerable<Product> GetPopolerProduct()
         {
             throw new NotImplementedException();
@@ -30,7 +50,7 @@ namespace ShopApp.DataAccess.Concrete.EfCore
             }
         }
 
-        public List<Product> GetProductsByCategorry(string category, int page)
+        public List<Product> GetProductsByCategorry(string category, int page,int pageSize)
         {
             using(var context= new ShopContext())
             {
@@ -46,7 +66,7 @@ namespace ShopApp.DataAccess.Concrete.EfCore
                                 .Where(i => i.ProductCategories.Any(a => a.Category.Name.ToLower() == category.ToLower()));
                 }
 
-                return products.ToList();
+                return products.Skip((page-1)*pageSize).Take(pageSize).ToList();
             }
         }
     }

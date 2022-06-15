@@ -39,6 +39,12 @@ namespace ShopApp.Business.Concrete
             return _productDal.GetById(id);
         }
 
+        //sayfadaki categoriye göre ürün sayısını verir
+        public int GetCountByCategory(string category)
+        {
+            return _productDal.GetCountByCategory(category);
+        }
+
         public List<Product> GetPopulerProducts()
         {
             return _productDal.GetAll();
@@ -49,9 +55,9 @@ namespace ShopApp.Business.Concrete
             return _productDal.GetProductDetails(id);
         }
 
-        public List<Product> GetProductsByCategorry(string category, int page)
+        public List<Product> GetProductsByCategorry(string category, int page, int pageSize)
         {
-            return _productDal.GetProductsByCategorry(category,page);
+            return _productDal.GetProductsByCategorry(category,page,pageSize);
         }
 
         public void Update(Product product)
