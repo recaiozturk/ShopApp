@@ -12,6 +12,7 @@ namespace ShopApp.Business.Abstract
         Product GetById(int id); 
         List<Product> GetAll();
         List<Product> GetPopulerProducts();
+        List<Product> GetProductsByCategorry(string category, int page);
 
         Product GetProductDetails(int id);
 

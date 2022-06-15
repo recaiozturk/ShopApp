@@ -7,7 +7,7 @@ using ShopApp.Business.Abstract;
 using ShopApp.Business.Concrete;
 using ShopApp.DataAccess.Abstract;
 using ShopApp.DataAccess.Concrete.EfCore;
-using ShopApp.DataAccess.Concrete.Memory;
+
 using ShopApp.WebUI.Middlewares;
 using System;
 using System.Collections.Generic;
@@ -34,8 +34,9 @@ namespace ShopApp.WebUI
             services.AddScoped<IProductDal, EfCoreProductDal>();
             services.AddScoped<ICategoryDal, EfCoreCategoryDal>();
             services.AddScoped<IProductService, ProductManager>();
+            services.AddScoped<IcategoryServicee, CategoryManager>();
 
-            
+
 
             services.AddControllersWithViews(); ;
         }
@@ -60,8 +61,18 @@ namespace ShopApp.WebUI
 
             app.UseAuthorization();
 
+            //app.UseMvcWithDefaultRoute();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+
+                    name: "products",
+                    pattern: "products/{category?}",
+                    defaults: new { controller ="Shop",action="List"}
+
+                    );
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"

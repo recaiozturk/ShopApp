@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShopApp.Business.Concrete
 {
-    public class ProductManager : IProductService 
+    public class ProductManager : IProductService
     {
         //depencency injection
         private IProductDal _productDal;
@@ -47,6 +47,11 @@ namespace ShopApp.Business.Concrete
         public Product GetProductDetails(int id)
         {
             return _productDal.GetProductDetails(id);
+        }
+
+        public List<Product> GetProductsByCategorry(string category, int page)
+        {
+            return _productDal.GetProductsByCategorry(category,page);
         }
 
         public void Update(Product product)

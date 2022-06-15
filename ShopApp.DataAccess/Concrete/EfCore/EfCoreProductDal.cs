@@ -29,5 +29,25 @@ namespace ShopApp.DataAccess.Concrete.EfCore
                     .FirstOrDefault();
             }
         }
+
+        public List<Product> GetProductsByCategorry(string category, int page)
+        {
+            using(var context= new ShopContext())
+            {
+                var products = context.Products.AsQueryable();
+
+                //category stringi null değil ise
+                if (!string.IsNullOrEmpty(category))
+                {
+                    //Caategory ye ulaşmak için daha önce CategoryProduct a ulaşıyoruz,sql dedki join işlemi gibi
+                    products = products
+                                .Include(i => i.ProductCategories)
+                                .ThenInclude(i => i.Category)
+                                .Where(i => i.ProductCategories.Any(a => a.Category.Name.ToLower() == category.ToLower()));
+                }
+
+                return products.ToList();
+            }
+        }
     }
 }

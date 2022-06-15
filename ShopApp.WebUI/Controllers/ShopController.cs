@@ -43,11 +43,12 @@ namespace ShopApp.WebUI.Controllers
             });
         }
 
-        public IActionResult List()
+        //products/telefon?page=1
+        public IActionResult List(string category,int page=1)
         {
             return View(new ProductListModel()
             {
-                Products = _productSevice.GetAll()
+                Products = _productSevice.GetProductsByCategorry(category,page)
             });
         }
     }

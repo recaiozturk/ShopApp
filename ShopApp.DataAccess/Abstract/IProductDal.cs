@@ -12,6 +12,8 @@ namespace ShopApp.DataAccess.Abstract
     {
         IEnumerable<Product> GetPopolerProduct();
 
+        List<Product> GetProductsByCategorry(string category,int page);
+
         Product GetProductDetails(int id);
     }
 }

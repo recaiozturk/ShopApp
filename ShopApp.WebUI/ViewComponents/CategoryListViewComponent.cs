@@ -1,12 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopApp.Business.Abstract;
+using ShopApp.WebUI.Models;
 
 namespace ShopApp.WebUI.ViewComponents
 {
     public class CategoryListViewComponent:ViewComponent
     {
+
+        private IcategoryServicee _categoryService;
+
+        public CategoryListViewComponent(IcategoryServicee categoryService)
+        {
+            _categoryService=categoryService;
+        }
+
         public IViewComponentResult Invoke()
         {
-            return View();
+            return View(new CategoryListViewModel()
+            {
+                Categories = _categoryService.GetAll()
+            });
         }
     }
 }
