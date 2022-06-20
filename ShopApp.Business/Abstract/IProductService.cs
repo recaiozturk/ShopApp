@@ -21,5 +21,9 @@ namespace ShopApp.Business.Abstract
         void Create(Product product);
         void Update(Product product);
         void Delete(Product Product);
+        Product GetByIdWithCategories(int id);
+
+        //Updadte overloaded versiyon(Aşırı yüklenmiş hali)
+        void Update(Product entity, int[] categoryIds);
     }
 }

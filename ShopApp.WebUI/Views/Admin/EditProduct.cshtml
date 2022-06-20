@@ -4,14 +4,37 @@
 @{
     ViewData["Title"] = "EditProduct";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var counter = 0;
 }
+
+@section Scripts{
+
+    <script src="~/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/ckeditor_4.19.0_f21acea28e2a/ckeditor/ckeditor.js"></script>
+
+
+
+
+    <script>
+        CKEDITOR.replace("editor");
+    </script>
+
+
+
+}
+
+
 
 <h1> Edit Product</h1>
 <hr />
 
-<div class="row">
-    <div class="col-md-8">
-        <form asp-controller="Admin" asp-action="Edit" method="post">
+<form asp-controller="Admin" asp-action="EditProduct" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-8">
+
+            <div asp-validation-summary="All" class="text-danger"></div>
 
             <input type="hidden" name="Id" value="@Model.Id" />
 
@@ -25,7 +48,9 @@
             <div class="form-group row">
                 <label asp-for="ImageUrl" class="col-md-2 col-form-label"> </label>
                 <div class="col-md-10">
-                    <input asp-for="ImageUrl" value="@Model.ImageUrl" class="form-control" />
+                    <input type="hidden" name="ImageUrl" value="@Model.ImageUrl" />
+                    <img src="~/img/@Model.ImageUrl" width="80" />
+                    <input type="file" name="file" value="" />
                 </div>
             </div>
 
@@ -46,13 +71,56 @@
             </div>
 
 
-            <div class="form-group row">
 
-                <div class="col-md-10 offset-md-2">
-                    <button type="submit" class="btn btn-primary">Save Product</button>
+
+
+        </div>
+        <div class="col-md-4">
+            @foreach (var item in (List<Category>)ViewBag.Categories)
+            {
+                var isChecked = "";
+
+                if (Model.SelectedCategories.Any(i => i.Id == item.Id))
+                {
+                    isChecked = "checked";
+                    <input type="hidden" name="SelectedCategories[@counter].Id" value="@item.Id" />
+                    <input type="hidden" name="SelectedCategories[@counter].Name" value="@item.Name" />
+
+                    counter++;
+
+
+                }
+                else
+                {
+                    isChecked = "";
+                }
+
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="categoryIds"
+                           value="@item.Id"
+                           id="category@(item.Id)"
+                           @isChecked>
+                    <label class="form-check-label" for="category@(item.Id)">
+                        @item.Name
+                    </label>
                 </div>
-            </div>
 
-        </form>
+            }
+        </div>
+        <div class="col-md-10 offset-md-2">
+            <button type="submit" class="btn btn-primary">Save Product</button>
+        </div>
+
     </div>
-</div>
+
+
+
+
+
+
+</form>
+
+
+

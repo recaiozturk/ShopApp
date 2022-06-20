@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Abstract;
 using ShopApp.Entities;
 using ShopApp.WebUI.Models;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShopApp.WebUI.Controllers
 {
@@ -36,7 +39,7 @@ namespace ShopApp.WebUI.Controllers
                 return NotFound();
             }
 
-            var entity=_productService.GetById((int)id);
+            var entity=_productService.GetByIdWithCategories((int)id);
 
             if (entity == null)
             {
@@ -49,57 +52,92 @@ namespace ShopApp.WebUI.Controllers
                 Name = entity.Name,
                 Price = entity.Price,
                 Description = entity.Description,
-                ImageUrl = entity.ImageUrl
+                ImageUrl = entity.ImageUrl,
+                SelectedCategories=entity.ProductCategories.Select(c=>c.Category).ToList(),
             };
+
+            //sayfaya aynı zmanda tm categorileri de gönderelim
+            ViewBag.Categories=_categoryService.GetAll();
 
             return View(model);
         }
 
         //Edit Product - POST
         [HttpPost]
-        public IActionResult EditProduct(ProductModel model)
+        public async Task<IActionResult> EditProduct(ProductModel model, int[] categoryIds,IFormFile file)
         {
-
-            var entity=_productService.GetById(model.Id);
-
-            if(entity == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                var entity = _productService.GetById(model.Id);
+
+                if (entity == null)
+                {
+                    return NotFound();
+                }
+
+                entity.Name = model.Name;
+                entity.Price = model.Price;
+                entity.Description = model.Description;
+
+                //gelen esim dosyası boş değil ise
+                if (file != null)
+                {
+                    entity.ImageUrl = file.FileName;
+
+                    //filename i random olarak ayarlayabiliriz daha sonra
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", file.FileName);
+
+                    using(var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                }
+                
+
+                _productService.Update(entity, categoryIds);
+
+                return RedirectToAction("ProductList");
             }
 
-            entity.Name = model.Name;
-            entity.Price = model.Price;
-            entity.Description = model.Description;
-            entity.ImageUrl = model.ImageUrl;
 
-            _productService.Update(entity);
+            //sayfaya aynı zmanda tm categorileri de gönderelim
+            ViewBag.Categories = _categoryService.GetAll();
 
-            return RedirectToAction("ProductList");
+            return View(model);
+            
         }
 
         //Create Product - GET
         [HttpGet]
         public IActionResult CreateProduct()
         {
-            return View();
+            return View(new ProductModel());
         }
 
         //Create Product - POST
         [HttpPost]
         public IActionResult CreateProduct(ProductModel model)
         {
-            var entity = new Product()
+
+            if (ModelState.IsValid)
             {
-                Name = model.Name,
-                Price = model.Price,
-                Description = model.Description,
-                ImageUrl = model.ImageUrl
+                var entity = new Product()
+                {
+                    Name = model.Name,
+                    Price = model.Price,
+                    Description = model.Description,
+                    ImageUrl = model.ImageUrl
 
-            };
+                };
 
-            _productService.Create(entity);
+                _productService.Create(entity);
 
-            return RedirectToAction("ProductList");
+                return RedirectToAction("ProductList");
+            }
+
+            return View(model);
+
+            
         }
 
         //Delete Product
@@ -191,6 +229,16 @@ namespace ShopApp.WebUI.Controllers
             }
 
             return RedirectToAction("CategoryList");
+        }
+
+
+        //Delete From Category
+        [HttpPost]
+        public IActionResult DeleteFromCategory(int categoryId,int productId)
+        {
+            _categoryService.DeleteFromCategory(categoryId, productId);
+
+            return Redirect("/admin/editcategory/"+categoryId);
         }
     }
 

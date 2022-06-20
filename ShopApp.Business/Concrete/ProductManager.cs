@@ -19,6 +19,8 @@ namespace ShopApp.Business.Concrete
             _productDal = productDal;
         }
 
+        
+
         public void Create(Product product)
         {
             _productDal.Create(product);
@@ -37,6 +39,12 @@ namespace ShopApp.Business.Concrete
         public Product GetById(int id)
         {
             return _productDal.GetById(id);
+        }
+
+        //products lar ile birlikte categorileri de getir
+        public Product GetByIdWithCategories(int id)
+        {
+            return _productDal.GetByIdWithCategories(id);
         }
 
         //sayfadaki categoriye göre ürün sayısını verir
@@ -64,5 +72,32 @@ namespace ShopApp.Business.Concrete
         {
           _productDal.Update(product);
         }
+
+        public void Update(Product entity, int[] categoryIds)
+        {
+            _productDal.Update(entity, categoryIds);
+        }
+
+        public string ErrorMessages { get; set; }
+
+        //Test
+        //public bool Validate(Product entity)
+        //{
+        //    var isValid = true;
+
+        //    if (string.IsNullOrEmpty(entity.Name))
+        //    {
+        //        ErrorMessages += "Ürün ismi Girmelisiniz";
+        //    }
+
+        //    if (string.IsNullOrEmpty(entity.Name))
+        //    {
+        //        ErrorMessages += "Ürün ismi Girmelisiniz";
+        //    }
+
+        //    //daha Fazla Eklenebilir
+
+        //    return isValid;
+        //}
     }
 }

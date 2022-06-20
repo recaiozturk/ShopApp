@@ -61,8 +61,9 @@
                             <td>
                                 <a class="btn btn-primary btn-sm mr-2" href="/admin/products/@item.Id">Edit</a>
 
-                                <form action="/admin/DeleteProduct" method="post" style="display:inline">
+                                <form action="/admin/DeleteFromCategory" method="post" style="display:inline">
                                     <input type="hidden" name="productId" value="@item.Id" />
+                                    <input type="hidden" name="categoryId" value="@Model.Id" />
                                     <button type="submit" class="btn btn-danger btn-sm " href="#">Delete</button>
                                 </form>
                             </td>
