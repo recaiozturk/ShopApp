@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -7,7 +9,7 @@ using ShopApp.Business.Abstract;
 using ShopApp.Business.Concrete;
 using ShopApp.DataAccess.Abstract;
 using ShopApp.DataAccess.Concrete.EfCore;
-
+using ShopApp.WebUI.Identity;
 using ShopApp.WebUI.Middlewares;
 using System;
 using System.Collections.Generic;
@@ -29,6 +31,14 @@ namespace ShopApp.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+
+            //Identity db için ekleme yapýyoruz
+            services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+            services.AddIdentity<ApplicationUser,IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+                .AddDefaultTokenProviders();
+
+            
 
             //services.AddScoped<IProductDal, MemoryProductDal>();
             services.AddScoped<IProductDal, EfCoreProductDal>();
@@ -57,11 +67,15 @@ namespace ShopApp.WebUI
             app.UseStaticFiles();
             //app.CustomStaticFiles();
 
+            app.UseAuthorization();
+
             app.UseRouting();
 
             app.UseAuthorization();
 
             //app.UseMvcWithDefaultRoute();
+
+            
 
             app.UseEndpoints(endpoints =>
             {
