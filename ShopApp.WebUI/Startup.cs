@@ -38,7 +38,39 @@ namespace ShopApp.WebUI
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            
+            services.Configure<IdentityOptions>(options =>
+            {
+                //passwordun rakam içermesi için
+                options.Password.RequireDigit = true;
+
+                //passwordun kucuk karakter içermesi için
+                options.Password.RequireLowercase=true;
+
+                //minumum kac karakter olacaðý
+                options.Password.RequiredLength = 6;
+
+                //AlphaNumeric girme zorunluluðu olmasýn
+                options.Password.RequireNonAlphanumeric = true;
+
+                //mutlaka buyuk karakter icersin
+                options.Password.RequireUppercase=true;
+
+                //Kullanýcýnýn kac kere yanlýs parola girme hakký olsun
+                options.Lockout.MaxFailedAccessAttempts = 5;
+
+                //failed olduktan sonra login olmasý için gereken süre
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+
+                //Lockout sistemi yeni kullanýcý için de geçerli olsun
+                options.Lockout.AllowedForNewUsers = true;
+
+                //tek email ile uyelik oluþturma
+                options.User.RequireUniqueEmail=true;
+
+                //mail ve telefon onaylama
+                options.SignIn.RequireConfirmedEmail=true;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+            });
 
             //services.AddScoped<IProductDal, MemoryProductDal>();
             services.AddScoped<IProductDal, EfCoreProductDal>();
