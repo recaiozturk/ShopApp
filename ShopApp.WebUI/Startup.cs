@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -68,8 +69,30 @@ namespace ShopApp.WebUI
                 options.User.RequireUniqueEmail=true;
 
                 //mail ve telefon onaylama
-                options.SignIn.RequireConfirmedEmail=true;
+                options.SignIn.RequireConfirmedEmail=false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
+            });
+
+            //sessiondaki cookie ayarlarý
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/account/login";
+                options.LogoutPath = "/account/logout";
+                options.AccessDeniedPath = "/account/accesdenied";
+
+                //1 Gün boyunca cookiler tarayýcýda saklanýr.    
+                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20); // Varsayýlan deðer 20 dakkadýr
+
+                //uygulama kullanýlýrken cookie kapanma suresi- false olursa uykulama kulanýlsýn ya da kullanýlmasý n20 dakka sonra sona erer
+                options.SlidingExpiration = true;
+
+                options.Cookie = new CookieBuilder
+                {
+                    //scriptler cookileri okuyabilir
+                    HttpOnly = true,
+                    Name = "ShopApp.Security.Cookie"
+                };
             });
 
             //services.AddScoped<IProductDal, MemoryProductDal>();
