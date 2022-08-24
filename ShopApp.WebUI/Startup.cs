@@ -81,7 +81,7 @@ namespace ShopApp.WebUI
                 options.AccessDeniedPath = "/account/accesdenied";
 
                 //1 Gün boyunca cookiler tarayýcýda saklanýr.    
-                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                //options.ExpireTimeSpan = TimeSpan.FromDays(1);
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20); // Varsayýlan deðer 20 dakkadýr
 
                 //uygulama kullanýlýrken cookie kapanma suresi- false olursa uykulama kulanýlsýn ya da kullanýlmasý n20 dakka sonra sona erer
@@ -91,7 +91,7 @@ namespace ShopApp.WebUI
                 {
                     //scriptler cookileri okuyabilir
                     HttpOnly = true,
-                    Name = "ShopApp.Security.Cookie"
+                    Name = ".ShopApp.Security.Cookie"
                 };
             });
 
@@ -122,7 +122,7 @@ namespace ShopApp.WebUI
             app.UseStaticFiles();
             //app.CustomStaticFiles();
 
-            app.UseAuthorization();
+           
 
             app.UseRouting();
 
@@ -130,7 +130,7 @@ namespace ShopApp.WebUI
 
             //app.UseMvcWithDefaultRoute();
 
-            
+
 
             app.UseEndpoints(endpoints =>
             {

@@ -18,6 +18,45 @@ namespace ShopApp.WebUI.Controllers
             _signInManager = signInManager;
         }
 
+        //Kullanıcı girişi
+        public IActionResult Login()
+        {
+            return View(new LoginModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginModel model,string returnUrl=null)
+        {
+            //return url boş ise ana dizine yönlendirsin
+            returnUrl = returnUrl ?? "~/";
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user =await _userManager.FindByNameAsync(model.UserName);
+
+            if(user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Bu Kullanıcı ile daha önce hesap oluşturulmamış.");
+                return View(model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
+
+            if (result.Succeeded)
+            {
+                return Redirect(returnUrl);
+
+            }
+
+            ModelState.AddModelError(string.Empty, "Kullanıcı adı ve ya Parola Yanlış");
+
+            return View(model);
+        }
+
+        //Kullanıcı Oluşturma
         public IActionResult Register()
         {
             return View(new RegisterModel());
