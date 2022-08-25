@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShopApp.WebUI.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class AccountController : Controller
     {
 
@@ -19,40 +20,43 @@ namespace ShopApp.WebUI.Controllers
         }
 
         //Kullanıcı girişi
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl=null)
         {
-            return View(new LoginModel());
+            return View(new LoginModel()
+            {
+                ReturnUrl = returnUrl
+            });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel model,string returnUrl=null)
+        public async Task<IActionResult> Login(LoginModel model)
         {
             //return url boş ise ana dizine yönlendirsin
-            returnUrl = returnUrl ?? "~/";
+            
 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var user =await _userManager.FindByNameAsync(model.UserName);
+            var user =await _userManager.FindByEmailAsync(model.Email);
 
             if(user == null)
             {
-                ModelState.AddModelError("", "Bu Kullanıcı ile daha önce hesap oluşturulmamış.");
+                ModelState.AddModelError("", "Bu email ile daha önce hesap oluşturulmamış.");
                 return View(model);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
 
             if (result.Succeeded)
             {
-                return Redirect(returnUrl);
+                return Redirect(model.ReturnUrl ?? "~/");
                  
 
             }
 
-            ModelState.AddModelError("", "Kullanıcı adı ve ya Parola Yanlış");
+            ModelState.AddModelError("", "Email ve ya Parola Yanlış");
 
             return View(model);
         }
@@ -93,5 +97,13 @@ namespace ShopApp.WebUI.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Redirect("~/");
+        }
+
+
     }
 }
