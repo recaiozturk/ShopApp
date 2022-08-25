@@ -39,7 +39,7 @@ namespace ShopApp.WebUI.Controllers
 
             if(user == null)
             {
-                ModelState.AddModelError(string.Empty, "Bu Kullanıcı ile daha önce hesap oluşturulmamış.");
+                ModelState.AddModelError("", "Bu Kullanıcı ile daha önce hesap oluşturulmamış.");
                 return View(model);
             }
 
@@ -48,10 +48,11 @@ namespace ShopApp.WebUI.Controllers
             if (result.Succeeded)
             {
                 return Redirect(returnUrl);
+                 
 
             }
 
-            ModelState.AddModelError(string.Empty, "Kullanıcı adı ve ya Parola Yanlış");
+            ModelState.AddModelError("", "Kullanıcı adı ve ya Parola Yanlış");
 
             return View(model);
         }
@@ -85,7 +86,7 @@ namespace ShopApp.WebUI.Controllers
             {
                 //generate token
                 //send email
-                return RedirectToAction("Account", "Login");
+                return RedirectToAction("Login", "Account");
             }
 
             ModelState.AddModelError("", "Bilinmeyen Hata Tekrar Deneyiniz");

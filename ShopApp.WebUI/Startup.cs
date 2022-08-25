@@ -126,6 +126,7 @@ namespace ShopApp.WebUI
 
             app.UseRouting();
 
+            app.UseAuthentication(); 
             app.UseAuthorization();
 
             //app.UseMvcWithDefaultRoute();
