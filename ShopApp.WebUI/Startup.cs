@@ -69,7 +69,7 @@ namespace ShopApp.WebUI
                 options.User.RequireUniqueEmail=true;
 
                 //mail ve telefon onaylama
-                options.SignIn.RequireConfirmedEmail=false;
+                options.SignIn.RequireConfirmedEmail=true;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
             });
 

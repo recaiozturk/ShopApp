@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "ConfirmEmail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Confirm Email</h1>
+<hr />
+
+<div class="alert alert-warning">
+    @if(TempData["Message"] != null)
+    {
+        @TempData["Message"]
+    }
+</div>
+
