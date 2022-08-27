@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.WebUI.Identity;
 using ShopApp.WebUI.Models;
@@ -12,11 +13,13 @@ namespace ShopApp.WebUI.Controllers
 
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
+        private IEmailSender _emailSender;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailSender = emailSender;
         }
 
         //Kullanıcı girişi
@@ -102,7 +105,14 @@ namespace ShopApp.WebUI.Controllers
                     userId = user.Id,
                     token=code
                 });
+
                 //send email
+                await _emailSender.SendEmailAsync(model.Email, 
+                    "Hesabınızı onaylayınız", $"Lütfen email hesabınızı onaylamak için linke <a href='http://localhost:34373{callBackurl}'>tıklayınız</a>");
+
+
+
+
                 return RedirectToAction("Login", "Account");
             }
 
