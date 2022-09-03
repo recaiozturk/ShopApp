@@ -18,30 +18,12 @@
 
         @Html.Partial("_slider")
 
+
         <div class="row">
             @foreach (var product in Model.Products)
             {
-                @*<partial name="_product" for="@product" />*@
+                <partial name="_product" for="@product" />
 
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <img src="~/img/@product.ImageUrl" alt="@product.Name" />
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">@product.Name</a>
-                            </h4>
-                            <small class="text-muted">
-                                <i class="fa-solid fa-turkish-lira-sign"></i> @product.Price
-                            </small>
-                        </div>
-
-                        <div class="card-footer text-center">
-                            @*<a asp-controller="Shop" asp-action="Details" asp-route-id="@product.Id" class="bbtn btn-outline-primary btn-sm">Details</a>*@
-                            <a href="/Shop/Details/@product.Id" class="bbtn btn-outline-primary btn-sm">Details</a>
-                            <a href="#" class="bbtn btn-outline-primary btn-sm ml-3">Add To Cart</a>
-                        </div>
-                    </div>
-                </div>
 
             }
         </div>
