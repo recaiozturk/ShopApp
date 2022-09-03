@@ -80,7 +80,7 @@ namespace ShopApp.WebUI
             {
                 options.LoginPath = "/account/login";
                 options.LogoutPath = "/account/logout";
-                options.AccessDeniedPath = "/account/accesdenied";
+                options.AccessDeniedPath = "/account/accessdenied";
 
                 //1 Gün boyunca cookiler tarayýcýda saklanýr.    
                 //options.ExpireTimeSpan = TimeSpan.FromDays(1);
@@ -100,8 +100,12 @@ namespace ShopApp.WebUI
             //services.AddScoped<IProductDal, MemoryProductDal>();
             services.AddScoped<IProductDal, EfCoreProductDal>();
             services.AddScoped<ICategoryDal, EfCoreCategoryDal>();
+            services.AddScoped<ICartDal, EfCoreCartDal>();
+
+
             services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<IcategoryServicee, CategoryManager>();
+            services.AddScoped<ICartService, CartManager>();
 
             services.AddTransient<IEmailSender, EmailSender>();
 

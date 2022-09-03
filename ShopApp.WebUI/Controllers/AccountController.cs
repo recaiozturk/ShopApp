@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using ShopApp.Business.Abstract;
 using ShopApp.WebUI.Extensions;
 using ShopApp.WebUI.Identity;
 using ShopApp.WebUI.Models;
@@ -15,12 +16,18 @@ namespace ShopApp.WebUI.Controllers
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
         private IEmailSender _emailSender;
+        private ICartService _cartService;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender)
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager
+            ,IEmailSender emailSender
+            ,ICartService cartService
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _cartService = cartService;
         }
 
         //Kullanıcı girişi
@@ -142,7 +149,7 @@ namespace ShopApp.WebUI.Controllers
             return Redirect("~/");
         }
 
-        //Mail Onaylama
+        //Mail Onayı
         public async Task<IActionResult> ConfirmEmail(string userId,string token)
         {
             if(userId == null || token == null)
@@ -162,8 +169,14 @@ namespace ShopApp.WebUI.Controllers
             if(user != null)
             {
                 var result = await _userManager.ConfirmEmailAsync(user, token);
+
+
                 if (result.Succeeded)
                 {
+
+                    //kullanıcı için cart(sepet) oluşsturma
+                    _cartService.InitializeCart(user.Id);
+
                     TempData.Put("message", new ResultMessage()
                     {
                         Title = "Hesap Onayı",
@@ -288,6 +301,13 @@ namespace ShopApp.WebUI.Controllers
             }
 
             return View(model);
+        }
+
+
+        //Erişim Engellendi Sayfası
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
 
