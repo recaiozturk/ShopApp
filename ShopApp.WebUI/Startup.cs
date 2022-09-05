@@ -144,6 +144,14 @@ namespace ShopApp.WebUI
 
                 endpoints.MapControllerRoute(
 
+                    name: "cart",
+                    pattern: "cart",
+                    defaults: new { controller = "Cart", action = "Index" }
+
+                    );
+
+                endpoints.MapControllerRoute(
+
                     name: "adminProducts",
                     pattern: "admin/products",
                     defaults: new { controller = "Admin", action = "ProductList" }
