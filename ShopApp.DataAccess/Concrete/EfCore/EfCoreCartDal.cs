@@ -9,8 +9,21 @@ using System.Threading.Tasks;
 
 namespace ShopApp.DataAccess.Concrete.EfCore
 {
+
+   
     public class EfCoreCartDal : EfCoreGenericRepository<Cart, ShopContext>, ICartDal
     {
+
+        //GeneriRepository de ki Update den önce çalışır(eziyoruz)
+        public override void Update(Cart entity)
+        {
+            using(var context = new ShopContext())
+            {
+                context.Carts.Update(entity);
+                context.SaveChanges();
+            }
+        }
+
         public Cart GetByUserId(string userId)
         {
             using(var context = new ShopContext())
@@ -21,6 +34,15 @@ namespace ShopApp.DataAccess.Concrete.EfCore
                     .Include(i => i.CartItems)
                     .ThenInclude(i => i.Product)
                     .FirstOrDefault(i=>i.UserId==userId);
+            }
+        }
+
+        public void DeleteFromCart(int cartId, int productId)
+        {
+            using (var context = new ShopContext())
+            {
+                var cmd = @"delete from CartItem where CartId=@p0 And ProductId=@p1";
+                context.Database.ExecuteSqlRaw(cmd, cartId, productId);
             }
         }
     }
