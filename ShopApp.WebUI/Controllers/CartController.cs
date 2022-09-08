@@ -187,15 +187,12 @@ namespace ShopApp.WebUI.Controllers
 
         private Payment PaymentProcess(OrderModel model)
         {
-            //Options options = new Options();
-            //options.ApiKey = "your api key";
-            //options.SecretKey = "your secret key";
-            //options.BaseUrl = "https://sandbox-api.iyzipay.com";
-
             Options options = new Options();
-            options.ApiKey = "sandbox-8v1zUJWAzQxbIfqCtjBPpMxbENjFjWUS";
-            options.SecretKey = "sandbox-It8y2hLu8Zsqoo9edkgovtKmI8yZgMbo";
+            options.ApiKey = "your api key";
+            options.SecretKey = "your secret key";
             options.BaseUrl = "https://sandbox-api.iyzipay.com";
+
+
 
 
 
