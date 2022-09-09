@@ -185,6 +185,14 @@ namespace ShopApp.WebUI
                     );
 
                 endpoints.MapControllerRoute(
+
+                    name: "orders",
+                    pattern: "orders",
+                    defaults: new { controller = "Car", action = "GetOrders" }
+
+                    );
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"
 

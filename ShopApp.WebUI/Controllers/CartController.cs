@@ -123,7 +123,7 @@ namespace ShopApp.WebUI.Controllers
                 {
 
                     SaveOrder(model, payment, userId);
-                    //ClearCart(userId);
+                    ClearCart(cart.Id);
 
                     return View("Success");
                 }
@@ -148,9 +148,14 @@ namespace ShopApp.WebUI.Controllers
             return View(model);
         }
 
-        private void ClearCart(string userId)
+        public IActionResult GetOrders()
         {
-            throw new System.NotImplementedException();
+            return View();
+        }
+
+        private void ClearCart(int  cartId)
+        {
+            _cartService.ClearCart(cartId);
         }
 
         private void SaveOrder(OrderModel model, Payment payment, string userId)
@@ -185,11 +190,19 @@ namespace ShopApp.WebUI.Controllers
             _orderService.Create(order);
         }
 
+
+        
+
         private Payment PaymentProcess(OrderModel model)
         {
+            //Options options = new Options();
+            //options.ApiKey = "your api key";
+            //options.SecretKey = "your secret key";
+            //options.BaseUrl = "https://sandbox-api.iyzipay.com";
+
             Options options = new Options();
-            options.ApiKey = "your api key";
-            options.SecretKey = "your secret key";
+            options.ApiKey = "sandbox-8v1zUJWAzQxbIfqCtjBPpMxbENjFjWUS";
+            options.SecretKey = "sandbox-It8y2hLu8Zsqoo9edkgovtKmI8yZgMbo";
             options.BaseUrl = "https://sandbox-api.iyzipay.com";
 
 

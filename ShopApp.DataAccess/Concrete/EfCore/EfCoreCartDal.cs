@@ -45,5 +45,14 @@ namespace ShopApp.DataAccess.Concrete.EfCore
                 context.Database.ExecuteSqlRaw(cmd, cartId, productId);
             }
         }
+
+        public void ClearCart(int cartId)
+        {
+            using (var context = new ShopContext())
+            {
+                var cmd = @"delete from CartItem where CartId=@p0";
+                context.Database.ExecuteSqlRaw(cmd, cartId);
+            }
+        }
     }
 }
