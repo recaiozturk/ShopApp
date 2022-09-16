@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopApp.Business.Abstract;
 
 namespace ShopApp.WebApi.Controllers
 {
@@ -7,26 +8,34 @@ namespace ShopApp.WebApi.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private static readonly string[] Products =
+        IProductService _productService;
+        public ProductsController(IProductService productService)
         {
-            "samsung S1",
-            "samsung S2",
-            "samsung S3",
-            "samsung S4"
-        };
+            _productService = productService;
+        }
+
+
 
         [HttpGet]
-        public string[] GetProducts()
+        public IActionResult GetProducts()
         {
-            return Products;
+            var products = _productService.GetAll();
+
+            //Ok Status Code :200 Başarılı ile birlikte products gönderiyoruz
+            return Ok(products);
         }
 
 
         // localhost:4200/api/products/2
         [HttpGet("{id}")]
-        public string GetProducts(int id)
+        public IActionResult GetProducts(int id)
         {
-            return Products[id];
+            var product = _productService.GetById(id);
+
+            if(product == null)
+                return NotFound();  //Kullanıcıya 404 hatası gider
+
+            return Ok(product);
         }
     }
 }

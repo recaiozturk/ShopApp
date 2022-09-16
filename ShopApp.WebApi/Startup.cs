@@ -6,6 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ShopApp.Business.Abstract;
+using ShopApp.Business.Concrete;
+using ShopApp.DataAccess.Abstract;
+using ShopApp.DataAccess.Concrete.EfCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +35,18 @@ namespace ShopApp.WebApi
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopApp.WebApi", Version = "v1" });
             //});
+
+
+            services.AddScoped<IProductDal, EfCoreProductDal>();
+            services.AddScoped<ICategoryDal, EfCoreCategoryDal>();
+            services.AddScoped<ICartDal, EfCoreCartDal>();
+            services.AddScoped<IOrderDal, EfCoreOrderDal>();
+
+
+            services.AddScoped<IProductService, ProductManager>();
+            services.AddScoped<IcategoryServicee, CategoryManager>();
+            services.AddScoped<ICartService, CartManager>();
+            services.AddScoped<IOrderService, OrderManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
