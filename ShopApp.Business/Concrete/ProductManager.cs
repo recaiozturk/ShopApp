@@ -26,19 +26,27 @@ namespace ShopApp.Business.Concrete
             _productDal.Create(product);
         }
 
+        public async Task<Product> CreateAsync(Product product)
+        {
+            await _productDal.CreateAsync(product);
+            return product;
+        }
+
+
+
         public void Delete(Product product)
         {
             _productDal.Delete(product);
         }
 
-        public List<Product> GetAll()
+        public async Task<List<Product>> GetAll()
         {
-            return _productDal.GetAll();
+            return await _productDal.GetAll();
         }
 
-        public Product GetById(int id)
+        public async Task<Product> GetById(int id)
         {
-            return _productDal.GetById(id);
+            return  await _productDal.GetById(id);
         }
 
         //products lar ile birlikte categorileri de getir
@@ -53,9 +61,9 @@ namespace ShopApp.Business.Concrete
             return _productDal.GetCountByCategory(category);
         }
 
-        public List<Product> GetPopulerProducts()
+        public async Task<List<Product>> GetPopulerProducts()
         {
-            return _productDal.GetAll();
+            return await  _productDal.GetAll();
         }
 
         public Product GetProductDetails(int id)
@@ -76,6 +84,11 @@ namespace ShopApp.Business.Concrete
         public void Update(Product entity, int[] categoryIds)
         {
             _productDal.Update(entity, categoryIds);
+        }
+
+        List<Product> IProductService.GetPopulerProducts()
+        {
+            throw new NotImplementedException();
         }
 
         public string ErrorMessages { get; set; }

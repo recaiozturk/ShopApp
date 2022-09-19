@@ -24,17 +24,19 @@ namespace ShopApp.WebUI.Controllers
         }
 
         // List Products
-        public IActionResult ProductList()
+        public async Task<IActionResult> ProductList()
         {
+            var products= await _productService.GetAll();
+
             return View( new ProductListModel
             {
-                Products=_productService.GetAll()
+                Products=products
             });
         }
 
         //Edit Product - GET
         [HttpGet]
-        public IActionResult EditProduct(int? id)
+        public async Task<IActionResult> EditProductAsync(int? id)
         {
             if(id== null)
             {
@@ -59,18 +61,18 @@ namespace ShopApp.WebUI.Controllers
             };
 
             //sayfaya aynı zmanda tm categorileri de gönderelim
-            ViewBag.Categories=_categoryService.GetAll();
+            ViewBag.Categories= await _categoryService.GetAll();
 
             return View(model);
         }
 
         //Edit Product - POST
         [HttpPost]
-        public async Task<IActionResult> EditProduct(ProductModel model, int[] categoryIds,IFormFile file)
+        public async Task<IActionResult> EditProductAsync(ProductModel model, int[] categoryIds,IFormFile file)
         {
             if (ModelState.IsValid)
             {
-                var entity = _productService.GetById(model.Id);
+                var entity = await _productService.GetById(model.Id);
 
                 if (entity == null)
                 {
@@ -91,7 +93,7 @@ namespace ShopApp.WebUI.Controllers
 
                     using(var stream = new FileStream(path, FileMode.Create))
                     {
-                        await file.CopyToAsync(stream);
+                         file.CopyToAsync(stream);
                     }
                 }
                 
@@ -103,7 +105,7 @@ namespace ShopApp.WebUI.Controllers
 
 
             //sayfaya aynı zmanda tm categorileri de gönderelim
-            ViewBag.Categories = _categoryService.GetAll();
+            ViewBag.Categories =  await _categoryService.GetAll();
 
             return View(model);
             
@@ -144,9 +146,9 @@ namespace ShopApp.WebUI.Controllers
 
         //Delete Product
         [HttpPost]
-        public IActionResult DeleteProduct(int productId)
+        public async Task<IActionResult> DeleteProductAsync(int productId)
         {
-            var entity= _productService.GetById(productId);
+            var entity=  await _productService.GetById(productId);
 
             if (entity != null)
             {
@@ -158,11 +160,11 @@ namespace ShopApp.WebUI.Controllers
 
 
         //Category List 
-        public IActionResult CategoryList()
+        public async Task<IActionResult> CategoryList()
         {
             return View(new CategoryListModel()
             {
-                Categories = _categoryService.GetAll()
+                Categories = await _categoryService.GetAll()
             }) ;
         }
 
@@ -203,9 +205,9 @@ namespace ShopApp.WebUI.Controllers
 
         //Edit Category - POST
         [HttpPost]
-        public IActionResult EditCategory(CategoryModel model)
+        public async Task<IActionResult> EditCategory(CategoryModel model)
         {
-            var entity=_categoryService.GetById(model.Id);
+            var entity= await _categoryService.GetById(model.Id);
 
             if(entity == null)
             {
@@ -221,9 +223,9 @@ namespace ShopApp.WebUI.Controllers
 
         //Delete Category - POST
         [HttpPost]
-        public IActionResult DeleteCategory(int categoryId)
+        public async Task<IActionResult> DeleteCategoryAsync(int categoryId)
         {
-            var entity = _categoryService.GetById(categoryId);
+            var entity =  await _categoryService.GetById(categoryId);
 
             if (entity != null)
             {

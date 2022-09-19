@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Abstract;
 using ShopApp.WebUI.Models;
+using System.Threading.Tasks;
 
 namespace ShopApp.WebUI.ViewComponents
 {
@@ -14,12 +15,12 @@ namespace ShopApp.WebUI.ViewComponents
             _categoryService=categoryService;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             return View(new CategoryListViewModel()
             {
                 SelectedCategory=RouteData.Values["category"]?.ToString(),
-                Categories = _categoryService.GetAll()
+                Categories = await _categoryService.GetAll()
             });
         }
     }

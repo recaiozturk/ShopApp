@@ -9,11 +9,11 @@ namespace ShopApp.Business.Abstract
 {
     public interface IcategoryServicee
     {
-        Category GetById(int id);
+        Task<Category> GetById(int id);
 
         //Kategori ile ilişkili ürünleri getir
         Category GetByIdWithProducts(int id);
-        List<Category> GetAll();
+        Task<List<Category>> GetAll();
         void Create(Category category);
         void Update(Category category);
         void Delete(Category category);

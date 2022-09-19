@@ -35,14 +35,14 @@ namespace ShopApp.Business.Concrete
             _categoryDal.DeleteFromCategory(categoryId, productId);
         }
 
-        public List<Category> GetAll()
+        public async Task<List<Category>> GetAll()
         {
-            return _categoryDal.GetAll();
+            return await _categoryDal.GetAll();
         }
 
-        public Category GetById(int id)
+        public async Task<Category> GetById(int id)
         {
-            return _categoryDal.GetById(id);
+            return await _categoryDal.GetById(id);
         }
 
         public Category GetByIdWithProducts(int id)
@@ -54,5 +54,7 @@ namespace ShopApp.Business.Concrete
         {
             _categoryDal.Update(category);
         }
+
+        
     }
 }

@@ -9,11 +9,12 @@ namespace ShopApp.DataAccess.Abstract
 {
     public interface IRepository<T>
     {
-        T GetById(int id);
+        Task<T> GetById(int id);
         T GetOne(Expression<Func<T, bool>> filter); //parametre olarak linq sorgusu alır
-        List<T> GetAll(Expression<Func<T, bool>> filter=null); //Iqueryble --> tekrar sorgulanabilir
+        Task<List<T>> GetAll(Expression<Func<T, bool>> filter=null); //Iqueryble --> tekrar sorgulanabilir
 
         void Create(T entity);
+        Task<T> CreateAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
     }

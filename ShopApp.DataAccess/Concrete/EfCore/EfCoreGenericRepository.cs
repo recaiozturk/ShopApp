@@ -23,6 +23,16 @@ namespace ShopApp.DataAccess.Concrete.EfCore
             }
         }
 
+        public async Task<T> CreateAsync(T entity)
+        {
+            using (var context = new TContext())
+            {
+                await context.Set<T>().AddAsync(entity);
+                await context.SaveChangesAsync();
+                return entity;
+            }
+        }
+
         public void Delete(T entity)
         {
             using (var context = new TContext())
@@ -32,21 +42,21 @@ namespace ShopApp.DataAccess.Concrete.EfCore
             }
         }
 
-        public List<T> GetAll(Expression<Func<T, bool>> filter=null)  //filter = null--> varsayıla ndedğer null olsun
+        public async Task<List<T>>GetAll(Expression<Func<T, bool>> filter=null)  //filter = null--> varsayıla ndedğer null olsun
         {
             using (var context = new TContext())
             {
-                return filter == null
-                    ? context.Set<T>().ToList()
-                    : context.Set<T>().Where(filter).ToList();
+                return  filter == null
+                    ? await context.Set<T>().ToListAsync()
+                    : await context.Set<T>().Where(filter).ToListAsync();
             }
         }
 
-        public T GetById(int id)
+        public async Task<T> GetById(int id)
         {
             using (var context = new TContext())
             {
-                return context.Set<T>().Find(id);
+                return await context.Set<T>().FindAsync(id);
             }
         }
 

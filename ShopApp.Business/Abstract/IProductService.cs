@@ -9,8 +9,8 @@ namespace ShopApp.Business.Abstract
 {
     public interface IProductService
     {
-        Product GetById(int id); 
-        List<Product> GetAll();
+        Task<Product> GetById(int id); 
+        Task<List<Product>> GetAll();
         List<Product> GetPopulerProducts();
         List<Product> GetProductsByCategorry(string category, int page, int pageSize);
 
@@ -19,6 +19,7 @@ namespace ShopApp.Business.Abstract
         Product GetProductDetails(int id);
 
         void Create(Product product);
+        Task<Product> CreateAsync(Product product);
         void Update(Product product);
         void Delete(Product Product);
         Product GetByIdWithCategories(int id);
