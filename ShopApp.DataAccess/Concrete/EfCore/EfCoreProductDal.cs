@@ -108,5 +108,32 @@ namespace ShopApp.DataAccess.Concrete.EfCore
                 }
             }
         }
+
+        //UpdateAsync Overloaded
+        public async Task  UpdateAsync(Product entity, int[] categoryIds)
+        {
+            using (var context = new ShopContext())
+            {
+                var product = context.Products
+                    .Include(i => i.ProductCategories)
+                    .FirstOrDefault(p => p.Id == entity.Id);
+
+                if (product != null)
+                {
+                    product.Name = entity.Name;
+                    product.Description = entity.Description;
+                    product.ImageUrl = entity.ImageUrl;
+                    product.Price = entity.Price;
+
+                    product.ProductCategories = categoryIds.Select(catId => new ProductCategory()
+                    {
+                        CategoryId = catId,
+                        ProductId = entity.Id
+                    }).ToList();
+
+                    await context.SaveChangesAsync();
+                }
+            }
+        }
     }
 }

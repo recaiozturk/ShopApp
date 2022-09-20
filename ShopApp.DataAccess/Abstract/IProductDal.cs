@@ -18,5 +18,6 @@ namespace ShopApp.DataAccess.Abstract
         int GetCountByCategory(string category);
         Product GetByIdWithCategories(int id);
         void Update(Product entity, int[] categoryIds);
+        Task UpdateAsync(Product entity, int[] categoryIds);
     }
 }

@@ -21,10 +21,12 @@ namespace ShopApp.Business.Abstract
         void Create(Product product);
         Task<Product> CreateAsync(Product product);
         void Update(Product product);
+        Task UpdateAsync(Product product);
         void Delete(Product Product);
         Product GetByIdWithCategories(int id);
 
         //Updadte overloaded versiyon(Aşırı yüklenmiş hali)
         void Update(Product entity, int[] categoryIds);
+        Task UpdateAsync(Product entity, int[] categoryIds);
     }
 }

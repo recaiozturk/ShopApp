@@ -76,5 +76,14 @@ namespace ShopApp.DataAccess.Concrete.EfCore
                 context.SaveChanges(true);
             }
         }
+
+        public  virtual async Task  UpdateAsync(T entity)
+        {
+            using (var context = new TContext())
+            {
+                context.Entry(entity).State = EntityState.Modified;  // ilişkili datalarda çalışmaz(Ör:Cart daki CartItems ilişkili listesi)
+                await context.SaveChangesAsync(true);
+            }
+        }
     }
 }

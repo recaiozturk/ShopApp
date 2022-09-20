@@ -16,6 +16,7 @@ namespace ShopApp.DataAccess.Abstract
         void Create(T entity);
         Task<T> CreateAsync(T entity);
         void Update(T entity);
+        Task UpdateAsync(T entity);
         void Delete(T entity);
     }
 }

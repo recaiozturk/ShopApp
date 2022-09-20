@@ -81,15 +81,29 @@ namespace ShopApp.Business.Concrete
           _productDal.Update(product);
         }
 
+        public async Task UpdateAsync(Product product)
+        {
+            await _productDal.UpdateAsync(product);
+        }
+
         public void Update(Product entity, int[] categoryIds)
         {
             _productDal.Update(entity, categoryIds);
         }
 
+
+        public async Task UpdateAsync(Product entity, int[] categoryIds)
+        {
+            await _productDal.UpdateAsync(entity, categoryIds);
+        }
+
+
+
         List<Product> IProductService.GetPopulerProducts()
         {
             throw new NotImplementedException();
         }
+
 
         public string ErrorMessages { get; set; }
 

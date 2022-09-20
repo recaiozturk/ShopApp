@@ -48,5 +48,25 @@ namespace ShopApp.WebApi.Controllers
             //name of la action isminin yanlış yazıp göndermenin önüne geçiyoruz
             return CreatedAtAction(nameof(GetProducts),new {id=entity.Id}, entity);  //201 Created kodu
         }
+
+        //localhost:4200/api/products/2
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id,Product entity)
+        {
+            if( id != entity.Id)
+            {
+                return BadRequest();
+            }
+
+            var product = await _productService.GetById(id);
+
+            if(product == null)
+            {
+                return BadRequest();
+            }
+
+            await _productService.UpdateAsync(entity);
+            return NoContent();  //200 gider ama bilgilendirme gitmez
+        }
     }
 }
