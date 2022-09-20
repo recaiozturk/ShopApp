@@ -42,6 +42,15 @@ namespace ShopApp.DataAccess.Concrete.EfCore
             }
         }
 
+        public async Task DeleteAsync(T entity)
+        {
+            using (var context = new TContext())
+            {
+                context.Set<T>().Remove(entity);
+                await context.SaveChangesAsync();
+            }
+        }
+
         public async Task<List<T>>GetAll(Expression<Func<T, bool>> filter=null)  //filter = null--> varsayıla ndedğer null olsun
         {
             using (var context = new TContext())

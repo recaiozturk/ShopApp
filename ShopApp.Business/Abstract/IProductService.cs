@@ -23,6 +23,7 @@ namespace ShopApp.Business.Abstract
         void Update(Product product);
         Task UpdateAsync(Product product);
         void Delete(Product Product);
+        Task DeleteAsync(Product Product);
         Product GetByIdWithCategories(int id);
 
         //Updadte overloaded versiyon(Aşırı yüklenmiş hali)

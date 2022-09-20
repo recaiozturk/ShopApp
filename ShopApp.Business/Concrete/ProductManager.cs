@@ -39,6 +39,11 @@ namespace ShopApp.Business.Concrete
             _productDal.Delete(product);
         }
 
+        public async Task DeleteAsync(Product Product)
+        {
+            await _productDal.DeleteAsync(Product);
+        }
+
         public async Task<List<Product>> GetAll()
         {
             return await _productDal.GetAll();
@@ -104,6 +109,7 @@ namespace ShopApp.Business.Concrete
             throw new NotImplementedException();
         }
 
+        
 
         public string ErrorMessages { get; set; }
 

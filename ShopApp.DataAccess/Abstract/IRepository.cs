@@ -18,5 +18,6 @@ namespace ShopApp.DataAccess.Abstract
         void Update(T entity);
         Task UpdateAsync(T entity);
         void Delete(T entity);
+        Task DeleteAsync(T entity);
     }
 }

@@ -66,7 +66,25 @@ namespace ShopApp.WebApi.Controllers
             }
 
             await _productService.UpdateAsync(entity);
-            return NoContent();  //200 gider ama bilgilendirme gitmez
+            return NoContent();  //204 gider ama bilgilendirme gitmez
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var product= await _productService.GetById(id);
+
+            if(product == null)
+            {
+                return NotFound();
+            }
+
+            await _productService.DeleteAsync(product);
+
+            return NoContent(); //204
+        }
+
+
+
     }
 }
