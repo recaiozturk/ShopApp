@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Abstract;
 using ShopApp.Entities;
+using ShopApp.WebApi.DTO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ShopApp.WebApi.Controllers
@@ -23,8 +25,16 @@ namespace ShopApp.WebApi.Controllers
         {
             var products =  await _productService.GetAll();
 
+            //DTO sunmak istediğimiz data
+            var productsDTO = new List<ProductDTO>();
+
+            foreach (var product in products)
+            {
+                productsDTO.Add(ProductToDTO(product));
+            }
+
             //Ok Status Code :200 Başarılı ile birlikte products gönderiyoruz
-            return Ok(products);
+            return Ok(productsDTO);
         }
 
 
@@ -37,7 +47,7 @@ namespace ShopApp.WebApi.Controllers
             if(product == null)
                 return NotFound();  //Kullanıcıya 404 hatası gider
 
-            return Ok(product);
+            return Ok(ProductToDTO(product));
         }
 
         [HttpPost]
@@ -82,6 +92,20 @@ namespace ShopApp.WebApi.Controllers
             await _productService.DeleteAsync(product);
 
             return NoContent(); //204
+        }
+
+        //product i productDTO ya cevirir
+        public static ProductDTO ProductToDTO(Product product)
+        {
+            return new ProductDTO
+            {
+                Name = product.Name,
+                ProductId = product.Id,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price
+
+            };
         }
 
 

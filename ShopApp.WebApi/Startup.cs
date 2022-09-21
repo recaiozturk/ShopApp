@@ -26,6 +26,8 @@ namespace ShopApp.WebApi
 
         public IConfiguration Configuration { get; }
 
+        readonly string MyAllowOrgin = "_myAllowOrgins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -47,6 +49,29 @@ namespace ShopApp.WebApi
             services.AddScoped<IcategoryServicee, CategoryManager>();
             services.AddScoped<ICartService, CartManager>();
             services.AddScoped<IOrderService, OrderManager>();
+
+
+            //CORS Policy
+
+           
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    
+                        name:MyAllowOrgin,
+                        builder=>
+                        {
+                            //tüm adreslerden istek karsýlanýr
+                            builder.AllowAnyOrigin()
+                            //tüm istekler karsýlanýr  put,get,delete
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                            
+                        }
+                    
+                    );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +85,9 @@ namespace ShopApp.WebApi
             }
 
             app.UseRouting();
+
+            //cors using
+            app.UseCors(MyAllowOrgin);
 
             app.UseAuthorization();
 

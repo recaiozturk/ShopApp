@@ -1,0 +1,18 @@
+﻿
+@model List<Product>
+
+@{
+    ViewData["Title"] = "GetProductsFromRestAPI";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>GetProductsFromRestAPI</h1>
+
+@foreach (var item in Model)
+{
+    <div>
+        <p>@item.Name</p>
+        <p>@item.Price</p>
+    </div>
+}
+
